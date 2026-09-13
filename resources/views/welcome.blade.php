@@ -17,6 +17,7 @@
         .scene::before { top: -110px; left: -80px; } .scene::after { right: -110px; bottom: -80px; }
         .app-shell { position: relative; z-index: 1; width: min(100%, 438px); }
         .brand { text-align: center; color: #a64d6f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 14px; }
+        .recipient-name { color: #c2437d; font-size: 14px; font-weight: 700; letter-spacing: .05em; margin: 0 auto 12px; }
         .card { display: none; background: rgba(255,253,249,.94); border: 1px solid rgba(255,255,255,.75); border-radius: 24px; padding: clamp(26px, 7vw, 44px) clamp(21px, 7vw, 48px); box-shadow: 0 24px 70px rgba(129,55,83,.18); text-align: center; animation: rise .55s ease both; }
         .card.active { display: block; }
         @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -57,9 +58,10 @@
         <p class="brand">a tiny invitation, just for you</p>
         <section class="card active" data-step="invite">
             <div class="avatar">🐶</div>
+            <p class="recipient-name">Abhishek Pratap Singh</p>
             <h1><span class="flower">✿</span> Will you go on<br>a date with me? <span class="flower">✿</span></h1>
-            <p class="subtitle">I have a plan, a playlist, and a very good feeling about this.</p>
-            <div class="button-row" id="invite-actions"><button class="primary" data-next="schedule">YES ♥</button><button class="secondary" id="no-button">no ✿</button></div>
+            <p class="subtitle">I have a plan, a playlist, and one very special person in mind.</p>
+            <div class="button-row" id="invite-actions"><button class="primary" data-next="schedule">yes, let's go ♥</button><button class="secondary" id="no-button">no ✿</button></div>
         </section>
         <section class="card" data-step="schedule">
             <h2>So... when are you free?</h2>
