@@ -22,10 +22,11 @@
         .card.active { display: block; }
         @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .avatar { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 24px; background: #f1edf0; font-size: 42px; }
-        .photo-frame { width: 128px; height: 128px; padding: 6px; position: relative; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(145deg, #fff, #f3b5cc); box-shadow: 0 12px 24px rgba(173, 62, 112, .18), 0 0 0 8px rgba(255,255,255,.55); }
+        .photo-frame { width: 172px; height: 172px; padding: 7px; position: relative; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(145deg, #fff, #f3b5cc); box-shadow: 0 12px 24px rgba(173, 62, 112, .18), 0 0 0 8px rgba(255,255,255,.55); }
         .photo-frame::before, .photo-frame::after { content: '♥'; position: absolute; color: #df4f91; font-size: 18px; }
         .photo-frame::before { top: -8px; right: 4px; transform: rotate(15deg); } .photo-frame::after { bottom: 4px; left: -8px; color: #e9a2bf; transform: rotate(-18deg); }
         .photo-frame img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: center 24%; }
+        @media (max-width: 480px) { .photo-frame { width: 150px; height: 150px; } }
         h1, h2 { font-family: 'Playfair Display', serif; margin: 0; color: #502c3a; line-height: 1.1; }
         h1 { font-size: clamp(30px, 8vw, 42px); } h2 { font-size: clamp(27px, 7vw, 36px); }
         .subtitle { color: #9e6b7d; font-size: 14px; line-height: 1.7; margin: 16px auto 28px; max-width: 280px; }
