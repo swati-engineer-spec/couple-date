@@ -116,7 +116,7 @@
     let flowCompleted = false;
     const recordProgress = (step, stepName, abandoned = false) => {
         const payload = { session_id: sessionId, step, step_name: stepName, steps_completed: completedSteps, date: chosenDateValue, time: chosenTime, option: chosenFood, completed: flowCompleted, abandoned };
-        return fetch('{{ route('date-progress.store') }}', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }, body: JSON.stringify(payload) }).catch(() => {});
+        return fetch('/date-progress', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }, body: JSON.stringify(payload) }).catch(() => {});
     };
     const goTo = (step) => cards.forEach(card => card.classList.toggle('active', card.dataset.step === step));
     document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => goTo(button.dataset.next)));
@@ -179,7 +179,7 @@
         button.disabled = true;
         button.textContent = 'saving your date...';
         try {
-            const response = await fetch('{{ route('date-confirmations.store') }}', {
+            const response = await fetch('/date-confirmations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
