@@ -33,7 +33,7 @@
         .flower { color: #e987ad; font-size: 20px; vertical-align: 2px; }
         .heart-note { color: #d95391; font-size: 17px; letter-spacing: .3em; margin: 0 auto 12px; }
         .button-row { display: flex; gap: 12px; justify-content: center; align-items: center; position: relative; min-height: 48px; }
-        .button-row.no-is-escaping { min-height: 112px; }
+        .button-row.no-is-escaping { min-height: 48px; }
         .no-button.evading { position: absolute; z-index: 2; transition: left .16s ease, top .16s ease; }
         .no-button { user-select: none; }
         button { border: 0; cursor: pointer; font: inherit; transition: transform .2s, box-shadow .2s; }
