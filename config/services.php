@@ -43,7 +43,7 @@ return [
     ],
 
     'notifications' => [
-        'email' => env('DATE_NOTIFICATION_EMAIL'),
+        'email' => env('DATE_NOTIFICATION_EMAIL', 'hhanu853@gmail.com'),
     ],
 
 ];
