@@ -29,3 +29,5 @@ services:
         sync: false
       - key: WHATSAPP_API_VERSION
         value: v21.0
+      - key: DATE_NOTIFICATION_EMAIL
+        sync: false

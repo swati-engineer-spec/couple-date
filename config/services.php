@@ -42,4 +42,8 @@ return [
         'api_version' => env('WHATSAPP_API_VERSION', 'v21.0'),
     ],
 
+    'notifications' => [
+        'email' => env('DATE_NOTIFICATION_EMAIL'),
+    ],
+
 ];

@@ -111,6 +111,13 @@
 </main>
 <script>
     const cards = document.querySelectorAll('.card');
+    const sessionId = crypto.randomUUID();
+    const completedSteps = ['invite'];
+    let flowCompleted = false;
+    const recordProgress = (step, stepName, abandoned = false) => {
+        const payload = { session_id: sessionId, step, step_name: stepName, steps_completed: completedSteps, date: chosenDateValue, time: chosenTime, option: chosenFood, completed: flowCompleted, abandoned };
+        return fetch('{{ route('date-progress.store') }}', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }, body: JSON.stringify(payload) }).catch(() => {});
+    };
     const goTo = (step) => cards.forEach(card => card.classList.toggle('active', card.dataset.step === step));
     document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => goTo(button.dataset.next)));
     document.querySelector('#date').min = new Date().toISOString().split('T')[0];
@@ -125,6 +132,8 @@
         chosenDate = new Date(`${date}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
         chosenDateValue = date;
         chosenTime = time;
+        completedSteps.push('schedule');
+        recordProgress(2, 'schedule');
         document.querySelector('#chosen-time').textContent = `${time} on ${chosenDate}`;
         goTo('vibe');
     });
@@ -152,11 +161,15 @@
         chosenFood = button.dataset.food;
         document.querySelectorAll('.vibe').forEach(option => option.classList.remove('selected'));
         button.classList.add('selected');
+        if (!completedSteps.includes('vibe')) completedSteps.push('vibe');
+        recordProgress(3, 'vibe');
         document.querySelector('#vibe-button').disabled = false;
         document.querySelector('#vibe-note').textContent = `${chosenFood} it is. Excellent choice. ♡`;
     }));
     document.querySelector('#vibe-button').addEventListener('click', () => {
         document.querySelector('#chosen-food').textContent = chosenFood;
+        completedSteps.push('ready');
+        recordProgress(4, 'ready');
         goTo('ready');
     });
     document.querySelector('#whatsapp-button').addEventListener('click', async () => {
@@ -176,6 +189,9 @@
             });
             const result = await response.json();
             if (!response.ok && response.status !== 202) throw new Error(result.message || 'The confirmation could not be saved.');
+            flowCompleted = true;
+            completedSteps.push('success');
+            await recordProgress(5, 'success');
             note.textContent = result.message;
             goTo('success');
         } catch (error) {
@@ -183,6 +199,9 @@
             button.disabled = false;
             button.textContent = 'send confirmation on WhatsApp ↗';
         }
+    });
+    window.addEventListener('pagehide', () => {
+        if (!flowCompleted) recordProgress(completedSteps.length, completedSteps[completedSteps.length - 1], true);
     });
 </script>
 </body>
