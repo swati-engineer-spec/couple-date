@@ -7,6 +7,7 @@ use App\Models\DateProgress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class DateProgressController extends Controller
 {
@@ -45,10 +46,24 @@ class DateProgressController extends Controller
             || $existing->completed !== $progress->completed
             || $existing->abandoned !== $progress->abandoned;
         $shouldNotify = $stepChanged && config('services.notifications.email');
+        $notificationStatus = 'not_configured';
         if ($shouldNotify) {
-            Mail::to(config('services.notifications.email'))->send(new DateProgressSummary($progress));
+            try {
+                Mail::to(config('services.notifications.email'))->send(new DateProgressSummary($progress));
+                $notificationStatus = 'sent';
+            } catch (\Throwable $exception) {
+                $notificationStatus = 'failed';
+                Log::error('Date progress email failed.', [
+                    'session_id' => $progress->session_id,
+                    'step' => $progress->last_step,
+                    'exception' => $exception,
+                ]);
+            }
         }
 
-        return response()->json(['saved' => true]);
+        return response()->json([
+            'saved' => true,
+            'notification' => $notificationStatus,
+        ]);
     }
 }
