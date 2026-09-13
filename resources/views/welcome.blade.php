@@ -17,15 +17,20 @@
         .scene::before { top: -110px; left: -80px; } .scene::after { right: -110px; bottom: -80px; }
         .app-shell { position: relative; z-index: 1; width: min(100%, 438px); }
         .brand { text-align: center; color: #a64d6f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 14px; }
-        .recipient-name { color: #c2437d; font-size: 14px; font-weight: 700; letter-spacing: .05em; margin: 0 auto 12px; }
+        .recipient-name { color: #c2437d; font-size: 14px; font-weight: 700; letter-spacing: .05em; margin: 0 auto 10px; }
         .card { display: none; background: rgba(255,253,249,.94); border: 1px solid rgba(255,255,255,.75); border-radius: 24px; padding: clamp(26px, 7vw, 44px) clamp(21px, 7vw, 48px); box-shadow: 0 24px 70px rgba(129,55,83,.18); text-align: center; animation: rise .55s ease both; }
         .card.active { display: block; }
         @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .avatar { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 24px; background: #f1edf0; font-size: 42px; }
+        .photo-frame { width: 128px; height: 128px; padding: 6px; position: relative; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(145deg, #fff, #f3b5cc); box-shadow: 0 12px 24px rgba(173, 62, 112, .18), 0 0 0 8px rgba(255,255,255,.55); }
+        .photo-frame::before, .photo-frame::after { content: '♥'; position: absolute; color: #df4f91; font-size: 18px; }
+        .photo-frame::before { top: -8px; right: 4px; transform: rotate(15deg); } .photo-frame::after { bottom: 4px; left: -8px; color: #e9a2bf; transform: rotate(-18deg); }
+        .photo-frame img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: center; }
         h1, h2 { font-family: 'Playfair Display', serif; margin: 0; color: #502c3a; line-height: 1.1; }
         h1 { font-size: clamp(30px, 8vw, 42px); } h2 { font-size: clamp(27px, 7vw, 36px); }
         .subtitle { color: #9e6b7d; font-size: 14px; line-height: 1.7; margin: 16px auto 28px; max-width: 280px; }
         .flower { color: #e987ad; font-size: 20px; vertical-align: 2px; }
+        .heart-note { color: #d95391; font-size: 17px; letter-spacing: .3em; margin: 0 auto 18px; }
         .button-row { display: flex; gap: 12px; justify-content: center; align-items: center; position: relative; min-height: 48px; }
         .button-row.no-is-escaping { min-height: 112px; }
         .no-button.evading { position: absolute; z-index: 2; transition: left .16s ease, top .16s ease; }
@@ -57,10 +62,11 @@
     <div class="app-shell">
         <p class="brand">a tiny invitation, just for you</p>
         <section class="card active" data-step="invite">
-            <div class="avatar">🐶</div>
+            <div class="photo-frame"><img src="{{ asset('images/abhishek.jpeg') }}" alt="Abhishek Pratap Singh"></div>
             <p class="recipient-name">Abhishek Pratap Singh</p>
+            <p class="heart-note">♥ ♥ ♥</p>
             <h1><span class="flower">✿</span> Will you go on<br>a date with me? <span class="flower">✿</span></h1>
-            <p class="subtitle">I have a plan, a playlist, and one very special person in mind.</p>
+            <p class="subtitle">Abhishek, you make ordinary moments feel special. I would love to make one more beautiful memory with you.</p>
             <div class="button-row" id="invite-actions"><button class="primary" data-next="schedule">yes, let's go ♥</button><button class="secondary" id="no-button">no ✿</button></div>
         </section>
         <section class="card" data-step="schedule">
