@@ -12,6 +12,12 @@ class DateConfirmationController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
+        Log::info('DateConfirmationController@store: Incoming request received.', [
+            'date' => $request->input('date'),
+            'time' => $request->input('time'),
+            'option' => $request->input('option'),
+        ]);
+
         $data = $request->validate([
             'date' => ['required', 'date_format:Y-m-d'],
             'time' => ['required', 'string', 'max:40'],
@@ -19,6 +25,10 @@ class DateConfirmationController extends Controller
         ]);
 
         $recipientPhone = config('services.whatsapp.recipient_phone');
+
+        Log::info('DateConfirmationController: Creating database confirmation entry.', [
+            'has_phone' => !empty($recipientPhone),
+        ]);
 
         $confirmation = DateConfirmation::create([
             'recipient_phone' => $recipientPhone ?: 'not-configured',
@@ -28,7 +38,18 @@ class DateConfirmationController extends Controller
             'status' => 'pending',
         ]);
 
-        if (! $recipientPhone || ! config('services.whatsapp.access_token') || ! config('services.whatsapp.phone_number_id')) {
+        $accessToken = config('services.whatsapp.access_token');
+        $phoneNumberId = config('services.whatsapp.phone_number_id');
+
+        // Check if configuration parameters are missing
+        if (! $recipientPhone || ! $accessToken || ! $phoneNumberId) {
+            Log::warning('DateConfirmationController: Blocked execution due to missing WhatsApp settings.', [
+                'confirmation_id' => $confirmation->id,
+                'missing_recipient_phone' => empty($recipientPhone),
+                'missing_access_token' => empty($accessToken),
+                'missing_phone_number_id' => empty($phoneNumberId),
+            ]);
+
             $confirmation->update([
                 'status' => 'not_configured',
                 'error_message' => 'WhatsApp Cloud API credentials are not configured.',
@@ -45,11 +66,17 @@ class DateConfirmationController extends Controller
         $url = sprintf(
             'https://graph.facebook.com/%s/%s/messages',
             $version,
-            config('services.whatsapp.phone_number_id')
+            $phoneNumberId
         );
 
         try {
-            $response = Http::withToken(config('services.whatsapp.access_token'))
+            Log::info('DateConfirmationController: Dispatching API request to WhatsApp Cloud endpoint.', [
+                'confirmation_id' => $confirmation->id,
+                'target_url' => $url,
+                'to' => $confirmation->recipient_phone,
+            ]);
+
+            $response = Http::withToken($accessToken)
                 ->acceptJson()
                 ->post($url, [
                     'messaging_product' => 'whatsapp',
@@ -59,9 +86,16 @@ class DateConfirmationController extends Controller
                 ]);
 
             if ($response->successful()) {
+                $whatsappMsgId = data_get($response->json(), 'messages.0.id');
+                
+                Log::info('DateConfirmationController: WhatsApp delivery successful.', [
+                    'confirmation_id' => $confirmation->id,
+                    'whatsapp_message_id' => $whatsappMsgId,
+                ]);
+
                 $confirmation->update([
                     'status' => 'sent',
-                    'whatsapp_message_id' => data_get($response->json(), 'messages.0.id'),
+                    'whatsapp_message_id' => $whatsappMsgId,
                 ]);
 
                 return response()->json([
@@ -70,15 +104,25 @@ class DateConfirmationController extends Controller
                 ]);
             }
 
+            // Handles API response errors (e.g., HTTP 400 or 401)
+            Log::error('DateConfirmationController: WhatsApp API responded with an error code.', [
+                'confirmation_id' => $confirmation->id,
+                'status_code' => $response->status(),
+                'response_body' => $response->body(),
+            ]);
+
             $confirmation->update([
                 'status' => 'failed',
                 'error_message' => $response->body(),
             ]);
         } catch (\Throwable $exception) {
-            Log::error('WhatsApp date confirmation failed.', [
+            // Handles system or network exceptions (e.g., DNS timeout, host unreachable)
+            Log::critical('DateConfirmationController: Connection exception thrown during WhatsApp delivery.', [
                 'confirmation_id' => $confirmation->id,
+                'exception_message' => $exception->getMessage(),
                 'exception' => $exception,
             ]);
+
             $confirmation->update([
                 'status' => 'failed',
                 'error_message' => $exception->getMessage(),
