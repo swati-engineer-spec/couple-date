@@ -19,19 +19,16 @@ class DateConfirmationController extends Controller
         ]);
 
         $recipientPhone = config('services.whatsapp.recipient_phone');
-        if (! $recipientPhone) {
-            return response()->json(['message' => 'The WhatsApp recipient is not configured.'], 503);
-        }
 
         $confirmation = DateConfirmation::create([
-            'recipient_phone' => $recipientPhone,
+            'recipient_phone' => $recipientPhone ?: 'not-configured',
             'confirmation_date' => $data['date'],
             'confirmation_time' => $data['time'],
             'chosen_option' => $data['option'],
             'status' => 'pending',
         ]);
 
-        if (! config('services.whatsapp.access_token') || ! config('services.whatsapp.phone_number_id')) {
+        if (! $recipientPhone || ! config('services.whatsapp.access_token') || ! config('services.whatsapp.phone_number_id')) {
             $confirmation->update([
                 'status' => 'not_configured',
                 'error_message' => 'WhatsApp Cloud API credentials are not configured.',
