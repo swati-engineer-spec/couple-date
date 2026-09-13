@@ -11,27 +11,27 @@
     <style>
         :root { --pink: #df4f91; --ink: #4c2b39; }
         * { box-sizing: border-box; }
-        body { margin: 0; min-height: 100vh; color: var(--ink); font-family: 'DM Sans', sans-serif; background: #f4dfe4; }
-        .scene { min-height: 100vh; display: grid; place-items: center; padding: 34px 18px; overflow: hidden; position: relative; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); font-family: 'DM Sans', sans-serif; background: #f4dfe4; overflow-x: hidden; }
+        .scene { min-height: 100svh; display: grid; place-items: center; padding: 20px 18px; overflow: hidden; position: relative; }
         .scene::before, .scene::after { content: ''; position: absolute; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,.25); }
         .scene::before { top: -110px; left: -80px; } .scene::after { right: -110px; bottom: -80px; }
         .app-shell { position: relative; z-index: 1; width: min(100%, 438px); }
         .brand { text-align: center; color: #a64d6f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 14px; }
         .recipient-name { color: #c2437d; font-size: 14px; font-weight: 700; letter-spacing: .05em; margin: 0 auto 10px; }
-        .card { display: none; background: rgba(255,253,249,.94); border: 1px solid rgba(255,255,255,.75); border-radius: 24px; padding: clamp(26px, 7vw, 44px) clamp(21px, 7vw, 48px); box-shadow: 0 24px 70px rgba(129,55,83,.18); text-align: center; animation: rise .55s ease both; }
+        .card { display: none; background: rgba(255,253,249,.94); border: 1px solid rgba(255,255,255,.75); border-radius: 24px; padding: clamp(20px, 4vw, 30px) clamp(21px, 7vw, 48px); box-shadow: 0 24px 70px rgba(129,55,83,.18); text-align: center; animation: rise .55s ease both; }
         .card.active { display: block; }
         @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .avatar { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 24px; background: #f1edf0; font-size: 42px; }
-        .photo-frame { width: 172px; height: 172px; padding: 7px; position: relative; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(145deg, #fff, #f3b5cc); box-shadow: 0 12px 24px rgba(173, 62, 112, .18), 0 0 0 8px rgba(255,255,255,.55); }
+        .photo-frame { width: 140px; height: 140px; padding: 7px; position: relative; margin: 0 auto 12px; border-radius: 50%; background: linear-gradient(145deg, #fff, #f3b5cc); box-shadow: 0 12px 24px rgba(173, 62, 112, .18), 0 0 0 8px rgba(255,255,255,.55); }
         .photo-frame::before, .photo-frame::after { content: '♥'; position: absolute; color: #df4f91; font-size: 18px; }
         .photo-frame::before { top: -8px; right: 4px; transform: rotate(15deg); } .photo-frame::after { bottom: 4px; left: -8px; color: #e9a2bf; transform: rotate(-18deg); }
         .photo-frame img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: center 24%; }
-        @media (max-width: 480px) { .photo-frame { width: 150px; height: 150px; } }
+        @media (max-width: 480px) { .photo-frame { width: 122px; height: 122px; } .card { padding-top: 18px; padding-bottom: 18px; } }
         h1, h2 { font-family: 'Playfair Display', serif; margin: 0; color: #502c3a; line-height: 1.1; }
-        h1 { font-size: clamp(30px, 8vw, 42px); } h2 { font-size: clamp(27px, 7vw, 36px); }
-        .subtitle { color: #9e6b7d; font-size: 14px; line-height: 1.7; margin: 16px auto 28px; max-width: 280px; }
+        h1 { font-size: clamp(28px, 6vw, 38px); } h2 { font-size: clamp(27px, 7vw, 36px); }
+        .subtitle { color: #9e6b7d; font-size: 14px; line-height: 1.55; margin: 12px auto 20px; max-width: 280px; }
         .flower { color: #e987ad; font-size: 20px; vertical-align: 2px; }
-        .heart-note { color: #d95391; font-size: 17px; letter-spacing: .3em; margin: 0 auto 18px; }
+        .heart-note { color: #d95391; font-size: 17px; letter-spacing: .3em; margin: 0 auto 12px; }
         .button-row { display: flex; gap: 12px; justify-content: center; align-items: center; position: relative; min-height: 48px; }
         .button-row.no-is-escaping { min-height: 112px; }
         .no-button.evading { position: absolute; z-index: 2; transition: left .16s ease, top .16s ease; }
