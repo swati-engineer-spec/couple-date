@@ -1,0 +1,11 @@
+.env
+.git
+.gitignore
+.venv
+vendor
+node_modules
+storage/logs
+reference.mp4
+opening.jpg
+later.jpg
+storyboard.jpg
