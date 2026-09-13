@@ -33,8 +33,6 @@ services:
         sync: false
       - key: MAIL_MAILER
         value: smtp
-      - key: MAIL_SCHEME
-        value: tls
       - key: MAIL_HOST
         value: smtp.gmail.com
       - key: MAIL_PORT
