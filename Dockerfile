@@ -16,4 +16,4 @@ RUN mkdir -p database storage/framework/cache storage/framework/sessions storage
     && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 10000
-CMD sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"
+CMD sh -c "if [ -z \"$APP_KEY\" ]; then cp .env.example .env && php artisan key:generate --force; fi && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"
