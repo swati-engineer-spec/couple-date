@@ -124,6 +124,7 @@
     let chosenDate = '';
     let chosenDateValue = '';
     let chosenTime = '';
+    recordProgress(1, 'invite');
     document.querySelector('#schedule-button').addEventListener('click', () => {
         const date = document.querySelector('#date').value;
         const time = document.querySelector('#time').value;
