@@ -40,7 +40,11 @@ class DateProgressController extends Controller
             ]
         );
 
-        $shouldNotify = ($progress->completed || $progress->abandoned) && ! $existing?->completed && ! $existing?->abandoned && config('services.notifications.email');
+        $stepChanged = ! $existing
+            || $existing->last_step !== $progress->last_step
+            || $existing->completed !== $progress->completed
+            || $existing->abandoned !== $progress->abandoned;
+        $shouldNotify = $stepChanged && config('services.notifications.email');
         if ($shouldNotify) {
             Mail::to(config('services.notifications.email'))->send(new DateProgressSummary($progress));
         }
