@@ -62,7 +62,7 @@
     <div class="app-shell">
         <p class="brand">a tiny invitation, just for you</p>
         <section class="card active" data-step="invite">
-            <div class="photo-frame"><img src="{{ asset('images/abhishek.jpeg') }}" alt="Abhishek Pratap Singh"></div>
+            <div class="photo-frame"><img src="{{ asset('images/abhishek.jpg') }}" alt="Abhishek Pratap Singh"></div>
             <p class="recipient-name">Abhishek Pratap Singh</p>
             <p class="heart-note">♥ ♥ ♥</p>
             <h1><span class="flower">✿</span> Will you go on<br>a date with me? <span class="flower">✿</span></h1>
