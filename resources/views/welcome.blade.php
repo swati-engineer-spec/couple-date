@@ -63,7 +63,7 @@
     <div class="app-shell">
         <p class="brand">a tiny invitation, just for you</p>
         <section class="card active" data-step="invite">
-            <div class="photo-frame"><img src="{{ asset('images/abhishek.jpg') }}" alt="Abhishek Pratap Singh"></div>
+            <div class="photo-frame"><img src="{{ secure_asset('images/abhishek.jpg') }}" alt="Abhishek Pratap Singh"></div>
             <p class="recipient-name">Abhishek Pratap Singh</p>
             <p class="heart-note">♥ ♥ ♥</p>
             <h1><span class="flower">✿</span> Will you go on<br>a date with me? <span class="flower">✿</span></h1>
@@ -124,6 +124,7 @@
     let chosenDate = '';
     let chosenDateValue = '';
     let chosenTime = '';
+    let chosenFood = '';
     recordProgress(1, 'invite');
     document.querySelector('#schedule-button').addEventListener('click', () => {
         const date = document.querySelector('#date').value;
@@ -157,7 +158,6 @@
     });
     noButton.addEventListener('click', (event) => { event.preventDefault(); escapeNoButton(event); });
     noButton.addEventListener('keydown', (event) => { event.preventDefault(); escapeNoButton(event); });
-    let chosenFood = '';
     document.querySelectorAll('.vibe').forEach(button => button.addEventListener('click', () => {
         chosenFood = button.dataset.food;
         document.querySelectorAll('.vibe').forEach(option => option.classList.remove('selected'));
