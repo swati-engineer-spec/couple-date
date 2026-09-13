@@ -8,10 +8,9 @@ RUN apt-get update \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
-COPY composer.json composer.lock ./
+COPY . .
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-COPY . .
 RUN mkdir -p database storage/framework/cache storage/framework/sessions storage/framework/views \
     && touch database/database.sqlite \
     && chmod -R 775 storage bootstrap/cache
